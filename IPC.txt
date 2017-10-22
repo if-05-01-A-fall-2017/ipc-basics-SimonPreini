@@ -1,0 +1,35 @@
+1.)	A race condition occurs when two or more threads can access shared data and they try to change it at the same time.
+2.)   I.Because you can only block one core. The other cores can still be in the critical region and change for example the value of number that is used from another core.
+     II.Because it could be that the process runs a endless loop and your whole computer freeze.
+3.)   I.Scenario 1
+	process 0 has to call leave_region, after that process 1 can enter the region
+
+	Scenario 2
+	process 0 has to wait until process 1 has left the criticl region and 1 has to wait for 0 to leave the critical region
+
+     II.It would be problematic if we have a single core machine. If one process is in the method the second process can only start if the first is finished.
+
+    III.The loser variable is the latest waiting process
+
+     IV.int loser; 
+	Bool interested[3];  
+	
+	void enter_region(int process) 
+	{ 
+		interested[process] = True; 
+		loser = process;
+ 
+		int other1;
+		int other2;
+	        if(process == 1)
+			other1 = 0;
+			other2 = 2;		
+		if(process == 2)
+			other1 = 0;
+			other2 = 1;
+		else
+			other1 = 1 - process;
+		 	other2 = 2 - process; 
+		
+		while (loser == process && interested[other1] && interested[other2] ) ; 
+	}
